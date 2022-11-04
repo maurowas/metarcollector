@@ -15,7 +15,7 @@ XML output format:
 This application use met.no weather API to collect metar data. See [documentation](https://api.met.no/weatherapi/tafmetar/1.0/documentation)
 for more information.
 
-### Settings:
+### Settings
 
 | Name | Description                    |
 |------|--------------------------------|

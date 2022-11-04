@@ -1,12 +1,12 @@
+using MetarCollector.Infrastructure;
+using MetarCollector.Modules;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.Hosting;
-using Utviklertest.Infrastructure;
-using Utviklertest.Modules;
-using static Utviklertest.Metar;
-using static Utviklertest.Modules.FileSaver;
-using static Utviklertest.Modules.MetarXmlGenerator;
+using static MetarCollector.Metar;
+using static MetarCollector.Modules.FileSaver;
+using static MetarCollector.Modules.MetarXmlGenerator;
 
-namespace Utviklertest;
+namespace MetarCollector;
 
 public class OrchestratorService : BackgroundService
 {

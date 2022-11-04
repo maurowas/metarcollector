@@ -1,6 +1,6 @@
 ﻿using static System.IO.File;
 
-namespace Utviklertest.Modules;
+namespace MetarCollector.Modules;
 
 public static class FileSaver
 {

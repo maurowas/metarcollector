@@ -1,7 +1,7 @@
 ﻿using System.Xml.Linq;
 using static System.Globalization.CultureInfo;
 
-namespace Utviklertest.Modules;
+namespace MetarCollector.Modules;
 
 public static class MetarXmlGenerator
 {

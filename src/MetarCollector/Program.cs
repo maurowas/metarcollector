@@ -1,10 +1,10 @@
-﻿using Microsoft.Extensions.DependencyInjection;
+﻿using MetarCollector;
+using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
 using Serilog;
 using Serilog.Events;
-using Utviklertest;
 using static System.Console;
-using static Utviklertest.Modules.MetarRetrieverService;
+using static MetarCollector.Modules.MetarRetrieverService;
 
 CancelKeyPress += delegate
 {

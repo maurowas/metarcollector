@@ -1,6 +1,6 @@
 ﻿using Microsoft.Extensions.Configuration;
 
-namespace Utviklertest.Infrastructure;
+namespace MetarCollector.Infrastructure;
 
 public static class ConfigurationEx
 {

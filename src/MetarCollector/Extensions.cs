@@ -1,7 +1,7 @@
 ﻿using MetarParserCore;
 using static MetarParserCore.Enums.CloudType;
 
-namespace Utviklertest;
+namespace MetarCollector;
 
 public static class Metar
 {

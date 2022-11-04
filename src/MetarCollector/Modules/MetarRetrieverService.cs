@@ -1,15 +1,11 @@
-﻿using System.Diagnostics;
-using System.Xml.Linq;
+﻿using System.Xml.Linq;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
-using Serilog;
-using Utviklertest.Infrastructure;
 using static System.DateOnly;
 using static System.DateTime;
-using static System.String;
 using static Microsoft.AspNetCore.WebUtilities.QueryHelpers;
 
-namespace Utviklertest.Modules;
+namespace MetarCollector.Modules;
 
 public delegate Task<string> GetLatestMetar(string icao, DateOnly date = default, CancellationToken ct = default);
 

@@ -12,4 +12,7 @@ public static class Metar
             NoCloudDetected => true,
             _ => false
         };
+    
+    public static bool HasSpecialChars(this string self) => 
+        self.Any(ch => !char.IsLetterOrDigit(ch));
 }

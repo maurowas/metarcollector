@@ -15,11 +15,13 @@ public class OrchestratorService : BackgroundService
     
     private readonly GetLatestMetar _getLatestMetar;
     private readonly IConfiguration _configuration;
+    private readonly IHostApplicationLifetime _lifetime;
 
-    public OrchestratorService(GetLatestMetar getLatestMetar, IConfiguration configuration)
+    public OrchestratorService(GetLatestMetar getLatestMetar, IConfiguration configuration, IHostApplicationLifetime lifetime)
     {
         _getLatestMetar = getLatestMetar;
         _configuration = configuration;
+        _lifetime = lifetime;
     }
 
     protected override async Task ExecuteAsync(CancellationToken ct)
@@ -31,6 +33,7 @@ public class OrchestratorService : BackgroundService
         
         await SaveFile(xmlOutPath,dt =>
             GenerateXml(dt, icao, metarText, IsCloudless(metarText)).ToString(), ct);
-    }
 
+        _lifetime.StopApplication();
+    }
 }

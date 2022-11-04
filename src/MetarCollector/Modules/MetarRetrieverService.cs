@@ -7,33 +7,23 @@ using static Microsoft.AspNetCore.WebUtilities.QueryHelpers;
 
 namespace MetarCollector.Modules;
 
-public delegate Task<string> GetLatestMetar(string icao, DateOnly date = default, CancellationToken ct = default);
+public delegate Task<string> GetLatestMetar(Icao icao, DateOnly date = default, CancellationToken ct = default);
 
 public static class MetarRetrieverService
 {
     const string MetarServiceUrl = nameof(MetarServiceUrl);
     
-    public static GetLatestMetar Setup(HttpClient httpClient) =>
+     static GetLatestMetar Setup(HttpClient httpClient) =>
         async (icao, date, ct) =>
         {
             var resp = await httpClient.GetAsync(GetUrl(), ct);
 
             resp.EnsureSuccessStatusCode();
 
-            return await LatestMetarFromResponse();
-
-            async Task<string> LatestMetarFromResponse()
-            {
-                XNamespace ns = "http://api.met.no";
-                XNamespace gml = "http://www.opengis.net/gml/3.2";
-                return XDocument.Load(await resp.Content.ReadAsStreamAsync(ct))
-                    .Descendants(ns + "meteorologicalAerodromeReport")
-                    .OrderByDescending(x => (DateTime)x.Descendants(gml + "timePosition").First())
-                    .FirstOrDefault()!
-                    .Element(ns + "metarText")!
-                    .Value
-                    .Replace("\n", "").Replace("\t", "");
-            }
+            return (await resp.Content.ReadAsStringAsync(ct))
+                .TryExtractMetar(out var metarText) 
+                    ? metarText 
+                    : throw new Exception("Couldn't extract metarText");
 
             string GetUrl() =>
                 AddQueryString("metar.xml", new Dictionary<string, string>
@@ -60,5 +50,30 @@ public static class MetarRetrieverService
 
     static string ToDateFormat(this DateOnly dateOnly) =>
         dateOnly.ToString("yyyy-MM-dd");
+
+    public static bool TryExtractMetar(this string json, out string metarText)
+    {
+        try
+        {
+            XNamespace ns = "http://api.met.no";
+            XNamespace gml = "http://www.opengis.net/gml/3.2";
+            metarText = XDocument.Parse(json)
+                .Descendants(ns + "meteorologicalAerodromeReport")
+                .OrderByDescending(x => (DateTime)x.Descendants(gml + "timePosition").First())
+                .FirstOrDefault()!
+                .Element(ns + "metarText")!
+                .Value
+                .Replace("\n", "")
+                .Replace("\t", "")
+                .Trim();
+
+            return true;
+        }
+        catch (Exception)
+        {
+            metarText = string.Empty;
+            return false;
+        }
+    }
     
 }

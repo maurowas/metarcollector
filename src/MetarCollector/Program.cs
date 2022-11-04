@@ -6,10 +6,7 @@ using Serilog.Events;
 using static System.Console;
 using static MetarCollector.Modules.MetarRetrieverService;
 
-CancelKeyPress += delegate
-{
-    WriteLine("SIGINT captured. Shuting down...");
-};
+
 
 Log.Logger = new LoggerConfiguration()
     .MinimumLevel.Debug()

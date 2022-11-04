@@ -2,7 +2,8 @@ using MetarCollector.Infrastructure;
 using MetarCollector.Modules;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.Hosting;
-using static MetarCollector.Metar;
+using static System.Console;
+using static System.IO.Path;
 using static MetarCollector.Modules.FileSaver;
 using static MetarCollector.Modules.MetarXmlGenerator;
 
@@ -26,14 +27,16 @@ public class OrchestratorService : BackgroundService
 
     protected override async Task ExecuteAsync(CancellationToken ct)
     {
-        var xmlOutPath = _configuration.ThrowWhenNotSet(XmlOutputPath);
+        var xmlOutPath = Combine(_configuration.GetValue(XmlOutputPath, GetTempFileName()));
         var icao = _configuration.ThrowWhenNotSet(DefaultIcao);
 
         var metarText = await _getLatestMetar(icao, ct: ct);
         
         await SaveFile(xmlOutPath,dt =>
-            GenerateXml(dt, icao, metarText, IsCloudless(metarText)).ToString(), ct);
-
+            GenerateXml(dt, icao, metarText, metarText.ToMetar().IsCloudless()).ToString(), ct);
+        
+        WriteLine($"Xml saved to: {xmlOutPath}");
+        
         _lifetime.StopApplication();
     }
 }

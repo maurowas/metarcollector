@@ -20,7 +20,7 @@ for more information.
 | Name | Description                    |
 |------|--------------------------------|
 | MetarServiceUrl| Base url to met.no weather API |
- | XmlOutputPath | Path and name of xml file      |
+ | XmlOutputPath | Override name/path of xml file |
  | DefaultIcao | Default icao                   |
 
 
